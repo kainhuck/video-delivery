@@ -6,5 +6,5 @@ package clamber
 */
 
 type Clamber interface {
-	Crawl(uri string) (articleFile string, imageFile string, err error)
+	Crawl(uri string) (title string, articleFile string, imageFile string, err error)
 }

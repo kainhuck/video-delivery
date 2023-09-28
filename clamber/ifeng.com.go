@@ -18,16 +18,16 @@ func NewIfeng(path string) Clamber {
 	return &Ifeng{path: path}
 }
 
-func (i Ifeng) Crawl(uri string) (articleFile string, imageFile string, err error) {
+func (i Ifeng) Crawl(uri string) (title string, articleFile string, imageFile string, err error) {
 	resp, err := http.Get(uri)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	defer resp.Body.Close()
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	articleContent := make([]string, 0)
@@ -41,12 +41,12 @@ func (i Ifeng) Crawl(uri string) (articleFile string, imageFile string, err erro
 		img, _ = selection.Attr("src")
 	})
 
-	title := ""
 	doc.Find("h2[class^=index_title_]").Each(func(index int, selection *goquery.Selection) {
 		title = selection.Text()
 	})
 
 	now := time.Now().Format("2006-01-02")
+	originalTitle := title
 	title = now + "|" + title
 
 	articleFile = filepath.Join(i.path, "article", title) + ".txt"
@@ -54,28 +54,28 @@ func (i Ifeng) Crawl(uri string) (articleFile string, imageFile string, err erro
 	// 保存文本
 	article, err := os.Create(articleFile)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	if _, err := article.WriteString(strings.Join(articleContent, "\n")); err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
 	// 保存图片
 	resp, err = http.Get(img)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	defer resp.Body.Close()
 	imageFile = filepath.Join(i.path, "image", title) + ".jpg"
 
 	image, err := os.Create(imageFile)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 	_, err = io.Copy(image, resp.Body)
 	if err != nil {
-		return "", "", err
+		return "", "", "", err
 	}
 
-	return articleFile, imageFile, nil
+	return originalTitle, articleFile, imageFile, nil
 }

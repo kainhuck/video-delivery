@@ -7,7 +7,6 @@ import (
 	audio_maker "video-delivery/audio-maker"
 	"video-delivery/clamber"
 	"video-delivery/deliverer"
-	"video-delivery/utils"
 	video_maker "video-delivery/video-maker"
 )
 
@@ -17,11 +16,11 @@ func main() {
 	// 1. 抓取图片
 	fmt.Println("开始内容爬取")
 	clamber := clamber.NewIfeng(base)
-	articleFile, imageFile, err := clamber.Crawl("https://ishare.ifeng.com/c/s/v002YRDPuR6stZtW3GijNKVqFhJw4el98RshG1A1PZRUfrc__")
+	title, articleFile, imageFile, err := clamber.Crawl("https://ishare.ifeng.com/c/s/v002YRDPuR6stZtW3GijNKVqFhJw4el98RshG1A1PZRUfrc__")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("内容爬取完成，文章: %v, 图片: %v\n", articleFile, imageFile)
+	fmt.Printf("内容爬取完成，标题：%v，文章: %v, 图片: %v\n", title, articleFile, imageFile)
 
 	// 2. 文字转语音
 	fmt.Println("开始文字转语音")
@@ -44,7 +43,7 @@ func main() {
 	// 4. 投放视频
 	fmt.Println("开始视频投放")
 	deliverer := deliverer.NewBilibili(base)
-	if err := deliverer.Delivery(videoFile, imageFile, utils.TrimFilename(articleFile), "-"); err != nil {
+	if err := deliverer.Delivery(videoFile, imageFile, title, "-"); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("视频投放成功")
