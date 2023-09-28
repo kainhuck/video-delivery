@@ -14,7 +14,7 @@ type Ffmpeg struct {
 }
 
 func (f *Ffmpeg) MergeImageAudio(imageFile, audioFile string) (videoFile string, err error) {
-	videoFile = filepath.Join(f.path, "video", utils.TrimFilename(imageFile)+".mp4")
+	videoFile = filepath.Join(f.path, "video", utils.TrimFilename(audioFile)+".mp4")
 
 	if utils.ExistFile(videoFile) {
 		fmt.Printf("视频文件：%v，已经存在\n", videoFile)
