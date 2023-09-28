@@ -16,7 +16,7 @@ func main() {
 	// 1. 抓取图片
 	fmt.Println("开始内容爬取")
 	clamber := clamber.NewIfeng(base)
-	title, articleFile, imageFile, err := clamber.Crawl("https://ishare.ifeng.com/c/s/v002YRDPuR6stZtW3GijNKVqFhJw4el98RshG1A1PZRUfrc__")
+	title, articleFile, imageFile, err := clamber.Crawl("https://ishare.ifeng.com/c/s/v002q1NizuePMwyMYAv1ftwLEGpNl9kIf-_hS-_LoSq--CFRkk__")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -32,6 +32,7 @@ func main() {
 	fmt.Printf("文字转语音完成，语音: %v\n", audioFile)
 
 	// 3. 合成视频
+	imageFile = "data/image/img.png"
 	fmt.Println("开始合成视频")
 	videoMaker := video_maker.NewVideoMaker(base)
 	videoFile, err := videoMaker.MergeImageAudio(imageFile, audioFile)

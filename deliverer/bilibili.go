@@ -44,7 +44,7 @@ func (b *Bilibili) Delivery(videoFile string, cover string, title string, desc s
 		Cover:     cover_.Url,
 		Title:     title,
 		Copyright: 1,
-		TID:       bilibili_go.LifeGroup.RandomTid(),
+		TID:       37,
 		Tag:       "下饭视频,摸鱼音频,蹲坑视频",
 		Desc:      desc,
 		Recreate:  -1,

@@ -61,6 +61,9 @@ func (i Ifeng) Crawl(uri string) (title string, articleFile string, imageFile st
 	}
 
 	// 保存图片
+	if !strings.HasPrefix(img, "http") {
+		img = "https:" + img
+	}
 	resp, err = http.Get(img)
 	if err != nil {
 		return "", "", "", err
