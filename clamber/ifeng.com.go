@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 type Ifeng struct {
@@ -45,10 +44,6 @@ func (i Ifeng) Crawl(uri string) (title string, articleFile string, imageFile st
 		title = selection.Text()
 	})
 
-	now := time.Now().Format("2006-01-02")
-	originalTitle := title
-	title = now + "|" + title
-
 	articleFile = filepath.Join(i.path, "article", title) + ".txt"
 
 	// 保存文本
@@ -80,5 +75,5 @@ func (i Ifeng) Crawl(uri string) (title string, articleFile string, imageFile st
 		return "", "", "", err
 	}
 
-	return originalTitle, articleFile, imageFile, nil
+	return title, articleFile, imageFile, nil
 }

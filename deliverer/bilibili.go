@@ -39,11 +39,19 @@ func (b *Bilibili) Delivery(videoFile string, cover string, title string, desc s
 	}
 	log.Println("封面上传成功")
 
+	copyright := 1
+	source := ""
+	if len(custom) > 0 {
+		copyright = 2
+		source = custom[0].(string)
+	}
+
 	// 3. 投稿
 	result, err := b.client.SubmitVideo(&bilibili_go.SubmitRequest{
 		Cover:     cover_.Url,
 		Title:     title,
-		Copyright: 1,
+		Copyright: copyright,
+		Source:    source,
 		TID:       37,
 		Tag:       "下饭视频,摸鱼音频,蹲坑视频",
 		Desc:      desc,

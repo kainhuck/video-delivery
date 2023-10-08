@@ -12,11 +12,12 @@ import (
 
 func main() {
 	base := "data"
+	source := "https://ishare.ifeng.com/c/s/v002hnzwsL7vczhgOo--OnY9PgcOhHcDJzn4R3Xrc6TtG7DM__"
 
 	// 1. 抓取图片
 	fmt.Println("开始内容爬取")
 	clamber := clamber.NewIfeng(base)
-	title, articleFile, imageFile, err := clamber.Crawl("https://ishare.ifeng.com/c/s/v002q1NizuePMwyMYAv1ftwLEGpNl9kIf-_hS-_LoSq--CFRkk__")
+	title, articleFile, imageFile, err := clamber.Crawl(source)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,7 +45,7 @@ func main() {
 	// 4. 投放视频
 	fmt.Println("开始视频投放")
 	deliverer := deliverer.NewBilibili(base)
-	if err := deliverer.Delivery(videoFile, imageFile, title, "-"); err != nil {
+	if err := deliverer.Delivery(videoFile, imageFile, title, "-", source); err != nil {
 		log.Fatal(err)
 	}
 	fmt.Println("视频投放成功")
